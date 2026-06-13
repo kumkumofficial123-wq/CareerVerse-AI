@@ -1,4 +1,5 @@
 # 🚀 CareerVerse AI
+https://careerverse-ai-syuavvllgkab242ibt4mio.streamlit.app/
 
 ## Your Personal Career Simulation Platform
 
