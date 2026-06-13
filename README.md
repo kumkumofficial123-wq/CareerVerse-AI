@@ -228,23 +228,26 @@ streamlit run app.py
 
 ### Home Page
 
-(Add Screenshot)
+
 
 ### Resume Analyzer
 
-(Add Screenshot)
+
 
 ### Future Self Generator
 
-(Add Screenshot)
+
 
 ### AI Mentor
 
-(Add Screenshot)
+
 
 ### Skill Dashboard
 
-(Add Screenshot)
+<img width="1920" height="1080" alt="dashboard png" src="https://github.com/user-attachments/assets/32f09dc4-f94c-42b2-af3f-153db9e52ea6" />
+<img width="1920" height="1080" alt="interview png" src="https://github.com/user-attachments/assets/4914b0bb-a33a-49a8-bea0-f5406679c21d" />
+
+
 
 ---
 
