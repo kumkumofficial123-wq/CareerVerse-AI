@@ -2,45 +2,57 @@ import streamlit as st
 import plotly.express as px
 from PyPDF2 import PdfReader
 
+# ----------------------------
+# Page Config
+# ----------------------------
+
 st.set_page_config(
     page_title="CareerVerse AI",
     page_icon="🚀",
     layout="wide"
 )
 
-# -------------------------
+# ----------------------------
 # Helper Functions
-# -------------------------
+# ----------------------------
 
 def extract_text(pdf_file):
-    reader = PdfReader(pdf_file)
-    text = ""
+    try:
+        reader = PdfReader(pdf_file)
 
-    for page in reader.pages:
-        if page.extract_text():
-            text += page.extract_text()
+        text = ""
 
-    return text
+        for page in reader.pages:
+            page_text = page.extract_text()
+
+            if page_text:
+                text += page_text
+
+        return text
+
+    except:
+        return "Unable to read PDF."
 
 
 def analyze_resume(text):
 
-    skills = [
+    skills_list = [
         "python",
         "sql",
         "machine learning",
         "deep learning",
         "git",
         "github",
+        "streamlit",
         "pandas",
-        "numpy",
-        "streamlit"
+        "numpy"
     ]
 
     found = []
 
-    for skill in skills:
-        if skill.lower() in text.lower():
+    for skill in skills_list:
+
+        if skill in text.lower():
             found.append(skill)
 
     score = min(len(found) * 10, 100)
@@ -51,52 +63,57 @@ def analyze_resume(text):
 def future_self(goal):
 
     return f"""
-## 🌟 Your Future in 2030
+# 🚀 Future Self - 2030
 
-### Career
-You are a successful **{goal}**.
+## Career
 
-### Achievements
-✅ Built impactful projects
+You are now a successful **{goal}**.
+
+## Achievements
+
+✅ Built innovative projects
 
 ✅ Completed internships
 
+✅ Created a strong portfolio
+
 ✅ Developed leadership skills
 
-✅ Created a strong professional network
+## Lifestyle
 
-### Lifestyle
-🏠 Financially independent
+🌍 Working with global teams
 
-🌍 Working on exciting technologies
+💰 Financially independent
 
-🎯 Helping and mentoring students
+🎯 Continuously learning
 
-### Message from Future You
-Keep learning, keep building, and never stop improving.
-Every small step today creates your future tomorrow.
+## Message From Future You
+
+Stay consistent.
+
+Every project you build today creates opportunities tomorrow.
 """
 
 
 def career_story(goal):
 
     return f"""
-# 🛣 Career Journey Roadmap
+# 🛣 Career Journey
 
 ### 2026
-Learn Python and Programming Fundamentals
+Learn Python and Programming
 
 ### 2027
-Build Projects and Learn Git/GitHub
+Build Projects
 
 ### 2028
-Complete Internships and Open Source Contributions
+Complete Internships
 
 ### 2029
-Develop Advanced Skills and Portfolio
+Contribute to Open Source
 
 ### 2030
-Become a Successful **{goal}**
+Become a successful **{goal}**
 """
 
 
@@ -106,52 +123,50 @@ def mentor_advice(role):
 
         "Google Recruiter":
         """
-### Advice from Google Recruiter
+### Google Recruiter Advice
 
 • Build strong projects
 
 • Improve DSA
 
-• Optimize LinkedIn profile
+• Create LinkedIn profile
 
-• Practice interviews regularly
+• Practice mock interviews
         """,
 
         "AI Engineer":
         """
-### Advice from AI Engineer
+### AI Engineer Advice
 
 • Learn Python
 
-• Machine Learning
+• Learn Machine Learning
 
-• Deep Learning
+• Learn Deep Learning
 
-• Generative AI
-
-• Build real-world projects
+• Build AI Projects
         """,
 
         "Startup Founder":
         """
-### Advice from Startup Founder
+### Startup Founder Advice
 
 • Solve real problems
 
 • Build products
 
-• Learn business fundamentals
+• Learn communication
 
-• Develop communication skills
+• Learn teamwork
         """
     }
 
-    return mentors.get(role, "Keep learning every day.")
+    return mentors.get(role)
 
 
 def interview_questions(role):
 
-    data = {
+    questions = {
 
         "Python": [
             "What is a List?",
@@ -163,7 +178,7 @@ def interview_questions(role):
         "AI": [
             "What is Machine Learning?",
             "What is Deep Learning?",
-            "What is a Neural Network?",
+            "Explain Neural Networks.",
             "What is Overfitting?"
         ],
 
@@ -175,28 +190,28 @@ def interview_questions(role):
         ]
     }
 
-    return data.get(role, data["General"])
+    return questions.get(role)
 
 
-# -------------------------
-# Title
-# -------------------------
+# ----------------------------
+# Header
+# ----------------------------
 
 st.title("🚀 CareerVerse AI")
-st.subheader("Your Personal Career Simulation Platform")
-st.markdown("""
-### 🌟 Build Skills. Visualize Success. Shape Your Future.
-""")
+
+st.subheader(
+    "Your Personal Career Simulation Platform"
+)
+
+st.markdown(
+    "### 🌟 Build Skills. Visualize Success. Shape Your Future."
+)
+
 st.sidebar.success("CareerVerse AI v1.0")
-if skills["Python"] >= 80:
-    st.success("🏅 Python Explorer")
 
-if skills["AI"] >= 70:
-    st.success("🤖 AI Enthusiast")
-
-# -------------------------
-# Sidebar
-# -------------------------
+# ----------------------------
+# Menu
+# ----------------------------
 
 menu = st.sidebar.selectbox(
     "Choose Feature",
@@ -207,13 +222,14 @@ menu = st.sidebar.selectbox(
         "🛣 Career Story",
         "🧑‍🏫 AI Mentor",
         "🎤 Interview Simulator",
-        "📊 Skill Dashboard"
+        "📊 Skill Dashboard",
+        "🎯 Career Score"
     ]
 )
 
-# -------------------------
+# ----------------------------
 # Home
-# -------------------------
+# ----------------------------
 
 if menu == "🏠 Home":
 
@@ -222,29 +238,29 @@ if menu == "🏠 Home":
     st.info("""
 CareerVerse AI helps students:
 
-✅ Analyze Resumes
+✅ Analyze Resume
 
 ✅ Visualize Future Career
 
-✅ Generate Career Roadmaps
+✅ Generate Career Roadmap
 
-✅ Get Mentor Guidance
+✅ Learn From Mentors
 
 ✅ Practice Interviews
 
-✅ Track Skills
+✅ Track Skill Growth
 """)
 
-# -------------------------
+# ----------------------------
 # Resume Analyzer
-# -------------------------
+# ----------------------------
 
 elif menu == "📄 Resume Analyzer":
 
     st.header("📄 Resume Analyzer")
 
     uploaded_file = st.file_uploader(
-        "Upload Resume (PDF)",
+        "Upload Resume PDF",
         type=["pdf"]
     )
 
@@ -252,9 +268,9 @@ elif menu == "📄 Resume Analyzer":
 
         text = extract_text(uploaded_file)
 
-        score, skills = analyze_resume(text)
+        score, skills_found = analyze_resume(text)
 
-        st.success("Resume Uploaded Successfully")
+        st.success("Resume Uploaded")
 
         st.metric(
             "ATS Score",
@@ -263,23 +279,26 @@ elif menu == "📄 Resume Analyzer":
 
         st.subheader("Detected Skills")
 
-        if skills:
-            for skill in skills:
+        if skills_found:
+
+            for skill in skills_found:
                 st.write("✅", skill)
 
         else:
-            st.warning("No skills detected")
+            st.warning(
+                "No skills detected"
+            )
 
-# -------------------------
+# ----------------------------
 # Future Self
-# -------------------------
+# ----------------------------
 
 elif menu == "🔮 Future Self Generator":
 
     st.header("🔮 Future Self Generator")
 
     goal = st.text_input(
-        "Enter Your Dream Career"
+        "Enter Dream Career"
     )
 
     if st.button("Generate Future"):
@@ -288,9 +307,9 @@ elif menu == "🔮 Future Self Generator":
             future_self(goal)
         )
 
-# -------------------------
+# ----------------------------
 # Career Story
-# -------------------------
+# ----------------------------
 
 elif menu == "🛣 Career Story":
 
@@ -306,13 +325,13 @@ elif menu == "🛣 Career Story":
             career_story(goal)
         )
 
-# -------------------------
+# ----------------------------
 # Mentor
-# -------------------------
+# ----------------------------
 
 elif menu == "🧑‍🏫 AI Mentor":
 
-    st.header("🧑‍🏫 Career Mentor")
+    st.header("🧑‍🏫 AI Mentor")
 
     role = st.selectbox(
         "Choose Mentor",
@@ -329,16 +348,16 @@ elif menu == "🧑‍🏫 AI Mentor":
             mentor_advice(role)
         )
 
-# -------------------------
+# ----------------------------
 # Interview
-# -------------------------
+# ----------------------------
 
 elif menu == "🎤 Interview Simulator":
 
     st.header("🎤 Interview Simulator")
 
     role = st.selectbox(
-        "Choose Category",
+        "Category",
         [
             "Python",
             "AI",
@@ -350,32 +369,34 @@ elif menu == "🎤 Interview Simulator":
 
         questions = interview_questions(role)
 
-        for i, q in enumerate(questions, start=1):
-            st.write(f"{i}. {q}")
+        for i, q in enumerate(
+            questions,
+            start=1
+        ):
+            st.write(
+                f"{i}. {q}"
+            )
 
-# -------------------------
+# ----------------------------
 # Dashboard
-# -------------------------
+# ----------------------------
 
 elif menu == "📊 Skill Dashboard":
 
     st.header("📊 Skill Dashboard")
 
     skills = {
+
         "Python": 85,
         "SQL": 65,
-        "AI": 70,
+        "AI": 75,
         "Git": 90,
-        "Communication": 75
+        "Communication": 80
     }
 
     fig = px.bar(
         x=list(skills.keys()),
         y=list(skills.values()),
-        labels={
-            "x": "Skills",
-            "y": "Score"
-        },
         title="Career Readiness Dashboard"
     )
 
@@ -384,21 +405,58 @@ elif menu == "📊 Skill Dashboard":
         use_container_width=True
     )
 
-    st.metric(
-        "Career Readiness Score",
-        "77%"
+    if skills["Python"] >= 80:
+        st.success(
+            "🏅 Python Explorer Badge"
+        )
+
+    if skills["AI"] >= 70:
+        st.success(
+            "🤖 AI Enthusiast Badge"
+        )
+
+# ----------------------------
+# Career Score
+# ----------------------------
+
+elif menu == "🎯 Career Score":
+
+    st.header("🎯 Career Readiness Calculator")
+
+    python_skill = st.slider(
+        "Python",
+        0,
+        100,
+        70
     )
 
-    st.success("🏅 Future AI Engineer Badge Unlocked")
-st.header("🎯 Career Readiness")
+    communication = st.slider(
+        "Communication",
+        0,
+        100,
+        70
+    )
 
-python_skill = st.slider("Python",0,100,70)
-communication = st.slider("Communication",0,100,70)
-projects = st.slider("Projects",0,100,70)
+    projects = st.slider(
+        "Projects",
+        0,
+        100,
+        70
+    )
 
-score = (python_skill + communication + projects)/3
+    score = (
+        python_skill
+        + communication
+        + projects
+    ) / 3
 
-st.metric(
-    "Career Score",
-    f"{score:.0f}%"
-)
+    st.metric(
+        "Career Readiness Score",
+        f"{score:.0f}%"
+    )
+
+    if score >= 80:
+        st.balloons()
+        st.success(
+            "🚀 Industry Ready!"
+        )
